@@ -1,0 +1,166 @@
+:root {
+  /* Palette — drawn from Konark's black chlorite/khondalite stone,
+     the sun-god's gold, and the Bay of Bengal at dusk. */
+  --stone-dark: #241C14;
+  --stone-mid: #6B5744;
+  --stone-dim: #8A7860;
+  --parchment: #F3E9D2;
+  --parchment-deep: #E8DAB8;
+  --parchment-paper: #FBF6E9;
+  --gold: #C9963C;
+  --gold-bright: #E8A33D;
+  --gold-dim: #8A6A2A;
+  --rust: #8B5A3C;
+  --ocean: #1B3A4B;
+  --ocean-dim: #5f7481;
+  --ink: #241C14;
+  --border-warm: #E0CFA3;
+  --success: #3F7A4B;
+
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "Work Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Depth & glow — used sparingly, for hero panels and focus states,
+     not scattered across every card. */
+  --shadow-card: 0 1px 2px rgba(36, 28, 20, 0.06), 0 6px 16px rgba(36, 28, 20, 0.08);
+  --shadow-lifted: 0 16px 40px rgba(36, 28, 20, 0.22), 0 4px 12px rgba(36, 28, 20, 0.14);
+  --gold-glow: 0 0 0 3px rgba(201, 150, 60, 0.25);
+  /* Dusk over the Bay of Bengal, seen from Konark's beach at sunset. */
+  --gradient-dusk: linear-gradient(150deg, #16222c 0%, #1b3a4b 32%, #6b4a2e 62%, #c9963c 100%);
+  --radius-lg: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--parchment-deep);
+  font-family: var(--font-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--parchment);
+  border: 1px solid var(--border-warm);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.card-dark {
+  background: var(--stone-dark);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 8px 14px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary {
+  background: var(--stone-dark);
+  color: var(--parchment);
+}
+
+.btn-primary:hover {
+  background: #33271b;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+.btn-outline:hover {
+  background: rgba(201, 150, 60, 0.1);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  color: var(--stone-dim);
+  font-size: 11px;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--stone-dim);
+}
+
+.explorer-unlocked {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e7f0e4;
+  border: 1px solid #b9d3ae;
+  color: #2f5c37;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+}
+
+.auth-page {
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.discover-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--ink);
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.discover-subtitle {
+  font-size: 11px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
