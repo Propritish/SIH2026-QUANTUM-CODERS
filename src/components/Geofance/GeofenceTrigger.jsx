@@ -14,6 +14,9 @@ const STATUS_CONFIG = {
 // GPS Geofenced Trigger — checks proximity to a monument and reports status
 export default function GeofenceTrigger({ status, distance, source, target, onLocate, onSimulate }) {
   const { className, text, Icon } = STATUS_CONFIG[status] || STATUS_CONFIG.idle;
+  const safeTarget = target ?? { lat: 0, lng: 0 };
+  const targetLat = Number.isFinite(safeTarget.lat) ? safeTarget.lat : 0;
+  const targetLng = Number.isFinite(safeTarget.lng) ? safeTarget.lng : 0;
 
   return (
     <div className={`geofence geofence-${className}`}>
@@ -23,7 +26,7 @@ export default function GeofenceTrigger({ status, distance, source, target, onLo
           <div className="geofence-text">{text}</div>
           {distance != null && (
             <div className="geofence-distance mono">
-              {Math.round(distance)} m from target ({target.lat.toFixed(4)}, {target.lng.toFixed(4)})
+              {Math.round(distance)} m from target ({targetLat.toFixed(4)}, {targetLng.toFixed(4)})
               {source && ` · ${source === "server" ? "verified via $geoNear" : "computed on device"}`}
             </div>
           )}

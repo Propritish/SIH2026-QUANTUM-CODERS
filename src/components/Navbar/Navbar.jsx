@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Compass, Award, ShieldCheck, Map } from "lucide-react";
-import UserProfileBar from "../Auth/UserProfileBar.jsx";
+import UserProfileBar from "../Auth/UserPreofileBar.jsx";
 import "./Navbar.css";
 
 const TABS = [

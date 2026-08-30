@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Check, Compass } from "lucide-react";
-import GeofenceTrigger from "../components/Geofence/GeofenceTrigger.jsx";
+import GeofenceTrigger from "../components/Geofance/GeofenceTrigger.jsx";
 import ArViewer from "../components/ArViewer/ArViewer.jsx";
 import TimeSlider from "../components/TimeSlider/TimeSlider.jsx";
 import MonumentInfo from "../components/MonumentInfo/MonumentInfo.jsx";
