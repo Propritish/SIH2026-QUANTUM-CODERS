@@ -88,7 +88,13 @@
   gap: 2px;
   padding: 0 10px;
   overflow-x: auto;
-  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+@supports (scrollbar-width: none) {
+  .navbar-tabs {
+    scrollbar-width: none;
+  }
 }
 
 .navbar-tabs::-webkit-scrollbar {
