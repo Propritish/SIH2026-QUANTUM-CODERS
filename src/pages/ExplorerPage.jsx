@@ -3,7 +3,7 @@ import { Check, Compass } from "lucide-react";
 import GeofenceTrigger from "../components/Geofance/GeofenceTrigger.jsx";
 import ArViewer from "../components/ArViewer/ArViewer.jsx";
 import TimeSlider from "../components/TimeSlider/TimeSlider.jsx";
-import MonumentInfo from "../components/MonumentInfo/MonumentInfo.jsx";
+import MonumentInfo from "../components/Monumentinfo/MonumentInfo.jsx";
 import AudioGuide from "../components/AudioGuide/AudioGuide.jsx";
 import useGeofence from "../hooks/useGeofence.js";
 import { apiFetch } from "../utils/api.js";
