@@ -1,0 +1,39 @@
+.geofence {
+  background: var(--parchment);
+  border: 1px solid var(--border-warm);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-card);
+}
+
+.geofence-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.geofence-near .geofence-status svg { color: var(--success); }
+.geofence-far .geofence-status svg { color: var(--rust); }
+.geofence-idle .geofence-status svg { color: var(--stone-dim); }
+
+.geofence-text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.geofence-distance {
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.geofence-actions {
+  display: flex;
+  gap: 8px;
+}
