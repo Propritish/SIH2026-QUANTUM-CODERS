@@ -65,7 +65,7 @@ export default function App() {
           <Route path="/admin" element={<AdminPage auth={auth} />} />
         </Routes>
       </main>
-      <footer className="app-footer">odisha-ar-heritage · React + Vite + Express · deploy target: Vercel</footer>
+      <footer className="app-footer">Odisha AR Heritage • Discover • Experience • Verify • Collect</footer>
     </div>
   );
 }
