@@ -23,15 +23,19 @@
   gap: 10px;
 }
 
-.navbar-wheel {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  transition: transform 0.4s ease;
+.navbar-logo {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 10px;
+  transition: transform 0.4s ease, box-shadow 0.2s ease;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px;
 }
 
-.navbar-brand:hover .navbar-wheel {
-  transform: rotate(25deg);
+.navbar-brand:hover .navbar-logo {
+  transform: scale(1.04);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .navbar-title {

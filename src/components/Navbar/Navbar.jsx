@@ -22,7 +22,7 @@ export default function Navbar({ lang, setLang, stampCount, user, onLogout }) {
     <header className="navbar">
       <div className="navbar-top">
         <div className="navbar-brand">
-          <img src="/favicon.ico" alt="" className="navbar-wheel" />
+          <img src="/odisha-heritage-logo.png" alt="Odisha AR Heritage logo" className="navbar-logo" />
           <div>
             <div className="navbar-title">Odisha AR Heritage</div>
             <div className="navbar-subtitle mono">odisha-ar-heritage · WebAR</div>
