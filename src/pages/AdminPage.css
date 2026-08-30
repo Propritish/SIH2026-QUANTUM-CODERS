@@ -1,0 +1,39 @@
+.admin-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-hero-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--gradient-dusk);
+  color: var(--gold-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-hero-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.admin-hero-subtitle {
+  font-size: 11px;
+  margin-top: 2px;
+}

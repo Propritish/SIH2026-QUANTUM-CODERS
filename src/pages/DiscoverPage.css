@@ -1,0 +1,77 @@
+.discover-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.discover-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.discover-hero-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--gradient-dusk);
+  color: var(--gold-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.discover-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.discover-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.discover-chip {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-warm);
+  background: var(--parchment);
+  color: var(--stone-dim);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.discover-chip:hover {
+  border-color: var(--gold-dim);
+}
+
+.discover-chip.active {
+  background: var(--stone-dark);
+  color: var(--parchment);
+  border-color: var(--stone-dark);
+}
+
+.discovery-map-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(243, 233, 210, 0.9);
+  pointer-events: none;
+}
+
+.discovery-map-empty p {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--stone-dim);
+}
