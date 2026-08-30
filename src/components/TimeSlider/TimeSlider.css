@@ -1,0 +1,47 @@
+.time-slider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+}
+
+.time-slider-label {
+  color: var(--stone-dim);
+  transition: color 0.2s;
+}
+
+.time-slider-label.active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.time-slider-track {
+  position: relative;
+  width: 56px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--stone-mid);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+
+.time-slider-track.restored {
+  background: var(--gold);
+}
+
+.time-slider-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--parchment);
+  transition: left 0.25s ease;
+}
+
+.time-slider-track.restored .time-slider-thumb {
+  left: 31px;
+}

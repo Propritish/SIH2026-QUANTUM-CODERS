@@ -1,0 +1,38 @@
+.monument-info {
+  background: var(--parchment);
+  border: 1px solid var(--border-warm);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.monument-info-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: var(--rust);
+}
+
+.monument-info-header h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  color: var(--ink);
+  font-weight: 700;
+  margin: 0;
+}
+
+.monument-info-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #4a3d2d;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.monument-info-meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}

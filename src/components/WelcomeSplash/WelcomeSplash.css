@@ -1,0 +1,127 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-dusk);
+  cursor: pointer;
+  overflow: hidden;
+  transition: opacity 0.5s ease;
+}
+
+.splash-leaving {
+  opacity: 0;
+}
+
+.splash-halo {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  width: 480px;
+  height: 480px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(232, 163, 61, 0.32) 0%, rgba(232, 163, 61, 0) 68%);
+  animation: splash-pulse 3.2s ease-in-out infinite;
+}
+
+.splash-wheel {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  width: min(62vw, 300px);
+  height: min(62vw, 300px);
+  transform: translate(-50%, -50%);
+  animation: splash-spin 40s linear infinite;
+}
+
+.splash-dancer {
+  width: min(48vw, 220px);
+  height: auto;
+  margin-top: -6vh;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
+  opacity: 0;
+  transform: translateY(18px) scale(0.94);
+  animation: splash-dancer-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s forwards;
+}
+
+.splash-text {
+  margin-top: 18px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: splash-text-in 0.8s ease 0.9s forwards;
+}
+
+.splash-welcome-odia {
+  font-family: "Noto Sans Oriya", var(--font-display);
+  font-size: 22px;
+  color: var(--gold-bright);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.splash-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 700;
+  color: var(--parchment);
+  margin: 0;
+}
+
+.splash-subtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--parchment-deep);
+  opacity: 0.85;
+  margin: 6px 0 0;
+}
+
+.splash-hint {
+  position: absolute;
+  bottom: 28px;
+  color: var(--parchment-deep);
+  font-size: 10.5px;
+  letter-spacing: 0.5px;
+  opacity: 0;
+  animation: splash-hint-in 0.8s ease 1.8s forwards;
+}
+
+@keyframes splash-dancer-in {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes splash-text-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes splash-hint-in {
+  to { opacity: 0.65; }
+}
+@keyframes splash-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes splash-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Reduced motion: show the final state immediately, no spin/pulse loops */
+.splash-reduced .splash-dancer,
+.splash-reduced .splash-text,
+.splash-reduced .splash-hint {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+.splash-reduced .splash-wheel,
+.splash-reduced .splash-halo {
+  animation: none;
+}
+
+@media (max-width: 480px) {
+  .splash-text {
+    padding: 0 24px;
+  }
+}
