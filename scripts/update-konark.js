@@ -1,24 +1,24 @@
-// One-time / repeatable seed script: loads the monument catalogue into
-// MongoDB Atlas, creates the 2dsphere index the geofence check needs, and
-// (if ADMIN_EMAIL / ADMIN_PASSWORD are set) seeds one admin account.
-//
-// Usage:
-//   npm run seed
-// (reads .env.local automatically)
-
+// Direct MongoDB update for Konark monument with complete history
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-import User from "../api/models/User.js";
 import Monument from "../api/models/Monument.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, "..", ".env.local") });
 
-const MONUMENTS = [
-  {
+async function updateKonark() {
+  if (!process.env.MONGODB_URI) {
+    console.error("MONGODB_URI is not set. Add it to .env.local first.");
+    process.exit(1);
+  }
+
+  await mongoose.connect(process.env.MONGODB_URI, {
+    dbName: process.env.MONGODB_DB || "odisha_ar_heritage",
+  });
+
+  const konarkUpdate = {
     slug: "konark",
     title: "Konark Sun Temple",
     era: "1250 CE",
@@ -36,7 +36,7 @@ const MONUMENTS = [
       damaged:
         "Centuries of salt wind from the Bay of Bengal wore the stone thin. The main spire collapsed long ago, and colonial-era engineers filled the sanctum with sand in 1904 to keep the remaining walls standing. Today, visitors come not just to witness the ruins, but to understand the transformation of this great monument through time—from its glorious reconstruction as a complete temple-chariot to its present weathered state, which itself tells a story of resilience and cultural continuity.",
     },
-    location: { type: "Point", coordinates: [86.0945, 19.8876] }, // [lng, lat]
+    location: { type: "Point", coordinates: [86.0945, 19.8876] },
     radiusMeters: 800,
     models: {
       damagedUrl: "",
@@ -67,84 +67,23 @@ const MONUMENTS = [
       },
     ],
     live: true,
-  },
-  {
-    slug: "lingaraj",
-    title: "Lingaraj Temple",
-    era: "11th century",
-    blurb: "Bhubaneswar's tallest deul, still an active place of worship.",
-    location: { type: "Point", coordinates: [85.8341, 20.2381] },
-    live: false,
-  },
-  {
-    slug: "udayagiri",
-    title: "Udayagiri Caves",
-    era: "2nd century BCE",
-    blurb: "Rock-cut chambers carved for Jain ascetics.",
-    location: { type: "Point", coordinates: [85.7822, 20.2894] },
-    live: false,
-  },
-  {
-    slug: "barabati",
-    title: "Barabati Fort",
-    era: "14th century",
-    blurb: "A moated Gajapati fort on the banks of the Mahanadi.",
-    location: { type: "Point", coordinates: [85.8825, 20.4867] },
-    live: false,
-  },
-  {
-    slug: "chilika",
-    title: "Chilika Heritage Trail",
-    era: "Living heritage",
-    blurb: "Fishing villages around Asia's largest brackish lagoon.",
-    location: { type: "Point", coordinates: [85.32, 19.7] },
-    radiusMeters: 1200,
-    live: false,
-  },
-  {
-    slug: "jagannath",
-    title: "Jagannath Temple",
-    era: "12th century",
-    blurb: "Home of the annual Rath Yatra chariot procession.",
-    location: { type: "Point", coordinates: [85.8188, 19.8048] },
-    live: false,
-  },
-];
+  };
 
-async function seed() {
-  if (!process.env.MONGODB_URI) {
-    console.error("MONGODB_URI is not set. Add it to .env.local first.");
+  try {
+    const result = await Monument.findOneAndUpdate({ slug: "konark" }, { $set: konarkUpdate }, { new: true });
+    console.log("✓ Konark monument updated successfully with complete history");
+    console.log(`  - Restored description added`);
+    console.log(`  - Damaged description added`);
+    console.log(`  - Model URL: ${result.models.restoredUrl}`);
+  } catch (err) {
+    console.error("Failed to update Konark:", err.message);
     process.exit(1);
-  }
-
-  await mongoose.connect(process.env.MONGODB_URI, {
-    dbName: process.env.MONGODB_DB || "odisha_ar_heritage",
-  });
-
-  for (const m of MONUMENTS) {
-    await Monument.findOneAndUpdate({ slug: m.slug }, { $set: m }, { upsert: true });
-  }
-  await Monument.syncIndexes(); // ensures the 2dsphere index on `location` exists
-  console.log(`Seeded ${MONUMENTS.length} monument(s) and confirmed the 2dsphere index.`);
-
-  const adminEmail = process.env.ADMIN_EMAIL;
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  if (adminEmail && adminPassword) {
-    const passwordHash = await bcrypt.hash(adminPassword, 10);
-    await User.findOneAndUpdate(
-      { email: adminEmail.toLowerCase() },
-      { $set: { email: adminEmail.toLowerCase(), passwordHash, role: "admin", name: "Curator" } },
-      { upsert: true }
-    );
-    console.log(`Seeded admin account: ${adminEmail}`);
-  } else {
-    console.log("ADMIN_EMAIL / ADMIN_PASSWORD not set in .env.local — skipped admin account seeding.");
   }
 
   await mongoose.connection.close();
 }
 
-seed().catch((err) => {
-  console.error("Seed failed:", err);
+updateKonark().catch((err) => {
+  console.error("Update failed:", err);
   process.exit(1);
 });
