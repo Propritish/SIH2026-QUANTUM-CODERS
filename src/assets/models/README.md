@@ -10,4 +10,4 @@ low-poly LODs for mobile GPUs) so `<model-viewer>` loads quickly over
 mobile data at the temple site.
 
 These binaries aren't included in this scaffold — swap them in and the
-app (see `src/components/ArViewer/ArViewer.jsx`) will pick them up as-is.
+app (see `src/components/ArViewer/ArViewer.jsx`) will pick them up as-is
