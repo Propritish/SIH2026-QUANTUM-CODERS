@@ -41,6 +41,17 @@ export default function ArViewer({ monument, era, unlocked }) {
         </div>
       )}
 
+      {monument.slug === "konark" && era === "restored" ? (
+        <>
+          <iframe className="sketchfab-viewer" title="Konark Sun Temple 3D model" src="https://sketchfab.com/models/f7b47d96fc144eef87fcc97988f477df/embed" allow="autoplay; fullscreen; xr-spatial-tracking" allowFullScreen />
+          <p className="ar-viewer-attribution">
+            <a href="https://sketchfab.com/3d-models/konark-sun-temple-f7b47d96fc144eef87fcc97988f477df" target="_blank" rel="noreferrer">Konark Sun Temple</a>{" "}
+            by <a href="https://sketchfab.com/notyourtypicalshashank" target="_blank" rel="noreferrer">notyourtypicalshashank</a>{" on "}
+            <a href="https://sketchfab.com" target="_blank" rel="noreferrer">Sketchfab</a>
+          </p>
+        </>
+      ) : (
+      <>
       {/* eslint-disable-next-line react/no-unknown-property */}
       <model-viewer
         src={src}
@@ -58,10 +69,12 @@ export default function ArViewer({ monument, era, unlocked }) {
           {modelFailed ? "Model could not be loaded" : `Loading ${era} model…`}
         </div>
       </model-viewer>
+      </>
+      )}
 
-      <p className="ar-viewer-path mono">
+      {!(monument.slug === "konark" && era === "restored") && <p className="ar-viewer-path mono">
         {src} · drag to orbit
-      </p>
+      </p>}
     </div>
   );
 }
