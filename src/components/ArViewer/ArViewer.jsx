@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Lock } from "lucide-react";
 import "./ArViewer.css";
 
@@ -13,11 +13,24 @@ function localModelUrl(slug, era) {
 // Core WebAR Surface Tracking, wrapping Google's <model-viewer>.
 export default function ArViewer({ monument, era, unlocked }) {
   const remoteUrl = era === "restored" ? monument.models?.restoredUrl : monument.models?.damagedUrl;
-  const src = useMemo(() => remoteUrl || localModelUrl(monument.slug, era), [remoteUrl, monument.slug, era]);
-  const poster = useMemo(
-    () => monument.models?.restoredUrl || localModelUrl(monument.slug, "restored"),
-    [monument]
-  );
+  const localUrl = useMemo(() => localModelUrl(monument.slug, era), [monument.slug, era]);
+  const [useLocalModel, setUseLocalModel] = useState(!remoteUrl);
+  const [modelFailed, setModelFailed] = useState(false);
+
+  useEffect(() => {
+    setUseLocalModel(!remoteUrl);
+    setModelFailed(false);
+  }, [remoteUrl, monument.slug, era]);
+
+  const src = useLocalModel ? localUrl : remoteUrl;
+
+  function handleModelError() {
+    if (!useLocalModel && localUrl !== remoteUrl) {
+      setUseLocalModel(true);
+      return;
+    }
+    setModelFailed(true);
+  }
 
   return (
     <div className="ar-viewer">
@@ -31,7 +44,6 @@ export default function ArViewer({ monument, era, unlocked }) {
       {/* eslint-disable-next-line react/no-unknown-property */}
       <model-viewer
         src={src}
-        poster={poster}
         alt={`${monument.title} — ${era} state`}
         ar
         ar-modes="webxr scene-viewer quick-look"
@@ -39,15 +51,16 @@ export default function ArViewer({ monument, era, unlocked }) {
         auto-rotate
         shadow-intensity="1"
         exposure="0.9"
+        onError={handleModelError}
         style={{ width: "100%", height: "260px" }}
       >
         <div className="ar-viewer-fallback" slot="poster">
-          Loading {era} model…
+          {modelFailed ? "Model could not be loaded" : `Loading ${era} model…`}
         </div>
       </model-viewer>
 
       <p className="ar-viewer-path mono">
-        {remoteUrl || `assets/models/${monument.slug}_${era}.glb (local fallback)`} · drag to orbit
+        {src} · drag to orbit
       </p>
     </div>
   );
