@@ -12,6 +12,7 @@ function localModelUrl(slug, era) {
 
 // Core WebAR Surface Tracking, wrapping Google's <model-viewer>.
 export default function ArViewer({ monument, era, unlocked }) {
+  const useSketchfab = era === "restored";
   const remoteUrl = era === "restored" ? monument.models?.restoredUrl : monument.models?.damagedUrl;
   const localUrl = useMemo(() => localModelUrl(monument.slug, era), [monument.slug, era]);
   const [useLocalModel, setUseLocalModel] = useState(!remoteUrl);
@@ -41,7 +42,7 @@ export default function ArViewer({ monument, era, unlocked }) {
         </div>
       )}
 
-      {monument.slug === "konark" && era === "restored" ? (
+      {useSketchfab ? (
         <>
           <iframe className="sketchfab-viewer" title="Konark Sun Temple 3D model" src="https://sketchfab.com/models/f7b47d96fc144eef87fcc97988f477df/embed" allow="autoplay; fullscreen; xr-spatial-tracking" allowFullScreen />
           <p className="ar-viewer-attribution">
@@ -72,7 +73,7 @@ export default function ArViewer({ monument, era, unlocked }) {
       </>
       )}
 
-      {!(monument.slug === "konark" && era === "restored") && <p className="ar-viewer-path mono">
+      {!useSketchfab && <p className="ar-viewer-path mono">
         {src} · drag to orbit
       </p>}
     </div>
