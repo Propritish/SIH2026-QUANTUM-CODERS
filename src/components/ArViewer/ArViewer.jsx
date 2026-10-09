@@ -12,7 +12,24 @@ function localModelUrl(slug, era) {
 
 // Core WebAR Surface Tracking, wrapping Google's <model-viewer>.
 export default function ArViewer({ monument, era, unlocked }) {
-  const useSketchfab = era === "restored";
+  const useSketchfab = monument.slug === "konark" && (era === "restored" || era === "damaged");
+  const sketchfabModel = era === "restored"
+    ? {
+        title: "Konark Sun Temple 3D model",
+        embed: "https://sketchfab.com/models/f7b47d96fc144eef87fcc97988f477df/embed",
+        modelUrl: "https://sketchfab.com/3d-models/konark-sun-temple-f7b47d96fc144eef87fcc97988f477df",
+        modelName: "Konark Sun Temple",
+        creatorUrl: "https://sketchfab.com/notyourtypicalshashank",
+        creator: "notyourtypicalshashank",
+      }
+    : {
+        title: "Sun Temple Konark 3D model",
+        embed: "https://sketchfab.com/models/6cc905be2ae34e8091eb1eaa84a17738/embed?ui_theme=dark",
+        modelUrl: "https://sketchfab.com/3d-models/sun-temple-konark-6cc905be2ae34e8091eb1eaa84a17738",
+        modelName: "Sun Temple Konark",
+        creatorUrl: "https://sketchfab.com/moniln9",
+        creator: "moniln",
+      };
   const remoteUrl = era === "restored" ? monument.models?.restoredUrl : monument.models?.damagedUrl;
   const localUrl = useMemo(() => localModelUrl(monument.slug, era), [monument.slug, era]);
   const [useLocalModel, setUseLocalModel] = useState(!remoteUrl);
@@ -44,10 +61,10 @@ export default function ArViewer({ monument, era, unlocked }) {
 
       {useSketchfab ? (
         <>
-          <iframe className="sketchfab-viewer" title="Konark Sun Temple 3D model" src="https://sketchfab.com/models/f7b47d96fc144eef87fcc97988f477df/embed" allow="autoplay; fullscreen; xr-spatial-tracking" allowFullScreen />
+          <iframe className="sketchfab-viewer" title={sketchfabModel.title} src={sketchfabModel.embed} allow="autoplay; fullscreen; xr-spatial-tracking" allowFullScreen />
           <p className="ar-viewer-attribution">
-            <a href="https://sketchfab.com/3d-models/konark-sun-temple-f7b47d96fc144eef87fcc97988f477df" target="_blank" rel="noreferrer">Konark Sun Temple</a>{" "}
-            by <a href="https://sketchfab.com/notyourtypicalshashank" target="_blank" rel="noreferrer">notyourtypicalshashank</a>{" on "}
+            <a href={sketchfabModel.modelUrl} target="_blank" rel="noreferrer">{sketchfabModel.modelName}</a>{" "}
+            by <a href={sketchfabModel.creatorUrl} target="_blank" rel="noreferrer">{sketchfabModel.creator}</a>{" on "}
             <a href="https://sketchfab.com" target="_blank" rel="noreferrer">Sketchfab</a>
           </p>
         </>
