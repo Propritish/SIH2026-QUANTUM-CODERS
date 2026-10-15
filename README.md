@@ -92,6 +92,7 @@ Fill in `.env.local`:
 - `MONGODB_URI` — from Atlas (Connect → Drivers)
 - `JWT_SECRET` — any long random string, e.g. `openssl rand -hex 32`
 - `ADMIN_EMAIL` / `ADMIN_PASSWORD` — credentials for the one seeded admin account
+- `ADMIN_SIGNUP_KEY` — private random key (at least 32 characters) required for admin signup at `/admin`; generate one with `openssl rand -hex 32`
 
 **3. Seed the database**
 
@@ -197,8 +198,9 @@ narration text already seeded in `scripts/seed.js`.
 Push to GitHub, then import the repo at [vercel.com](https://vercel.com).
 Vercel auto-detects the Vite frontend; `vercel.json` routes all `/api/*`
 requests to the Express app in `api/index.js` as a single serverless
-function. Add `MONGODB_URI`, `JWT_SECRET`, `ADMIN_EMAIL`, and
-`ADMIN_PASSWORD` under Settings → Environment Variables, then run
+function. Add `MONGODB_URI`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`,
+and a private `ADMIN_SIGNUP_KEY` (at least 32 random characters) under
+Settings → Environment Variables, then run
 `npm run seed` once (locally, pointed at the same `MONGODB_URI`) to
 populate the production database.
 

@@ -54,6 +54,20 @@ export default function useAuth() {
     }
   }, []);
 
+  const registerAdmin = useCallback(async (name, email, password, setupKey) => {
+    setLoading(true);
+    try {
+      const data = await apiFetch("/api/auth/admin-register", {
+        method: "POST",
+        body: { name, email, password, setupKey },
+      });
+      persist(data.token, data.user);
+      return data.user;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const logout = useCallback(() => {
     window.localStorage.removeItem(TOKEN_KEY);
     window.localStorage.removeItem(USER_KEY);
@@ -69,7 +83,7 @@ export default function useAuth() {
   // that effect on every single render (a new object every time), which
   // cascades into React's "Maximum update depth exceeded" loop guard.
   return useMemo(
-    () => ({ user, loading, login, register, logout, token }),
-    [user, loading, login, register, logout, token]
+    () => ({ user, loading, login, register, registerAdmin, logout, token }),
+    [user, loading, login, register, registerAdmin, logout, token]
   );
 }

@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-import { Loader2, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Loader2, Mail, Lock, User, ArrowRight, KeyRound } from "lucide-react";
 import "./Auth.css";
 
-// Account creation form — tourists only (see api/routes/authRoutes.js;
-// admin accounts aren't created through the UI).
-export default function SignupForm({ onSubmit, submitting, error }) {
+// Shared account creation form for tourists and setup-key-protected admins.
+export default function SignupForm({ onSubmit, submitting, error, adminMode = false }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [setupKey, setSetupKey] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ name, email, password });
+    onSubmit({ name, email, password, setupKey });
   };
 
   return (
     <div className="auth-card">
-      <h2>Create your passport</h2>
-      <p className="auth-subtitle">Sign up to start collecting heritage stamps.</p>
+      <h2>{adminMode ? "Create admin account" : "Create your passport"}</h2>
+      <p className="auth-subtitle">
+        {adminMode ? "Enter the setup key provided by your site owner." : "Sign up to start collecting heritage stamps."}
+      </p>
       <form className="auth-form" onSubmit={handleSubmit}>
         <label className="auth-field">
           <span className="auth-field-label">Full name</span>
@@ -55,6 +57,21 @@ export default function SignupForm({ onSubmit, submitting, error }) {
             />
           </span>
         </label>
+        {adminMode && (
+          <label className="auth-field">
+            <span className="auth-field-label">Admin setup key</span>
+            <span className="auth-field-input">
+              <KeyRound size={16} />
+              <input
+                type="password"
+                value={setupKey}
+                onChange={(e) => setSetupKey(e.target.value)}
+                required
+                autoComplete="off"
+              />
+            </span>
+          </label>
+        )}
         {error && <div className="auth-error">{error}</div>}
         <button className="btn btn-primary auth-submit" type="submit" disabled={submitting}>
           {submitting ? <Loader2 size={15} className="auth-spin" /> : <ArrowRight size={15} />}

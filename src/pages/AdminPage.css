@@ -7,6 +7,26 @@
   gap: 20px;
 }
 
+.admin-auth-card {
+  width: 100%;
+  max-width: 380px;
+}
+
+.admin-auth-toggle {
+  display: block;
+  margin: 12px auto 0;
+  padding: 8px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--rust);
+  font: 600 12px var(--font-body);
+  cursor: pointer;
+}
+
+.admin-auth-toggle:hover {
+  text-decoration: underline;
+}
+
 .admin-hero {
   display: flex;
   align-items: center;

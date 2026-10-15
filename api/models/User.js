@@ -9,9 +9,8 @@ const visitedMonumentSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Tourist user schema & travel history.
-// role "admin" accounts are seeded via scripts/seed.js, never created
-// through the public /api/auth/register endpoint.
+// User accounts and travel history. Public tourist registration always uses
+// role "tourist"; admin registration requires the server-side setup key.
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },

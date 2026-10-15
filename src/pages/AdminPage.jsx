@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ShieldCheck } from "lucide-react";
 import LoginForm from "../components/Auth/LoginForm.jsx";
+import SignupForm from "../components/Auth/SignupForm.jsx";
 import AdminPortal from "../components/AdminPortal/Adminportal.jsx";
 import "./AdminPage.css";
 
@@ -10,6 +11,7 @@ export default function AdminPage({ auth }) {
   const [uploads, setUploads] = useState([]);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [mode, setMode] = useState("login");
   const addUpload = (u) => setUploads((arr) => [u, ...arr]);
 
   const handleLogin = async ({ email, password }) => {
@@ -24,16 +26,41 @@ export default function AdminPage({ auth }) {
     }
   };
 
+  const handleSignup = async ({ name, email, password, setupKey }) => {
+    setSubmitting(true);
+    setError(null);
+    try {
+      await auth.registerAdmin(name, email, password, setupKey);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   if (!auth.user || auth.user.role !== "admin") {
     return (
       <div className="page auth-page">
-        <LoginForm
-          onSubmit={handleLogin}
-          submitting={submitting}
-          error={error}
-          title="Admin sign in"
-          subtitle="Restricted to the curator team."
-        />
+        <div className="admin-auth-card">
+          {mode === "login" ? (
+            <LoginForm
+              onSubmit={handleLogin}
+              submitting={submitting}
+              error={error}
+              title="Admin sign in"
+              subtitle="Sign in with your curator account."
+            />
+          ) : (
+            <SignupForm onSubmit={handleSignup} submitting={submitting} error={error} adminMode />
+          )}
+          <button
+            className="admin-auth-toggle"
+            type="button"
+            onClick={() => { setError(null); setMode(mode === "login" ? "signup" : "login"); }}
+          >
+            {mode === "login" ? "Need an admin account? Sign up" : "Already registered? Sign in"}
+          </button>
+        </div>
       </div>
     );
   }
