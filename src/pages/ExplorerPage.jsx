@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { Check, Compass } from "lucide-react";
 import GeofenceTrigger from "../components/Geofance/GeofenceTrigger.jsx";
 import ArViewer from "../components/ArViewer/ArViewer.jsx";
@@ -54,8 +54,9 @@ export default function ExplorerPage({ lang, setLang, passport }) {
         </div>
         <div>
           <h2 className="explorer-hero-title">{monument.title}</h2>
-          <p className="mono explorer-hero-subtitle">{monument.era} · {t("explorer.subtitle")}</p>
-          <p className="mono explorer-hero-subtitle">{monument.era} · {t("explorer.subtitle")}</p>
+          <p className="mono explorer-hero-subtitle">{monument.era} Â· {t("explorer.subtitle")}</p>
+          <p className="mono explorer-hero-subtitle">{monument.era} Â· {t("explorer.subtitle")}</p>
+        </div>
       </div>
 
       <div className="explorer-step">

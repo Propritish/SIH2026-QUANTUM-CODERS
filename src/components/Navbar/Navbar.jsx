@@ -12,9 +12,14 @@ const TABS = [
   { to: "/admin", label: "nav.admin" },
 ];
 
+const LANGUAGES = [
+  { code: "en", label: "EN", name: "English" },
+  { code: "or", label: "ଓଡ଼ିଆ", name: "Odia" },
+  { code: "hi", label: "हिन्दी", name: "Hindi" },
+];
 
-export default function Navbar({ lang, setLang, stampCount, user, onLogout }) {
-  const { t } = useLanguage();
+export default function Navbar({ stampCount, user, onLogout }) {
+  const { lang, setLang, t } = useLanguage();
   return (
     <header className="navbar">
       <div className="navbar-top">
@@ -43,14 +48,16 @@ export default function Navbar({ lang, setLang, stampCount, user, onLogout }) {
         <div className="navbar-right">
           <div className="navbar-langs" aria-label={t("nav.language")}>
             <Globe2 size={20} aria-hidden="true" />
-            {["en", "or", "hi"].map((code) => (
+            {LANGUAGES.map(({ code, label, name }) => (
               <button
                 key={code}
                 className={`navbar-lang-btn ${lang === code ? "active" : ""}`}
                 onClick={() => setLang(code)}
-                aria-label={t("nav.changeLanguage", { language: t(`lang.${code}`) })}
+                type="button"
+                aria-label={t("nav.changeLanguage", { language: name })}
+                aria-pressed={lang === code}
               >
-                {code === "or" ? "OR" : code.toUpperCase()}
+                {label}
               </button>
             ))}
           </div>

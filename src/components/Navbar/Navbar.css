@@ -72,8 +72,9 @@
 }
 
 .navbar-lang-btn {
-  padding: 5px 4px;
-  border: 0;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
   background: transparent;
   color: rgba(255, 255, 255, 0.78);
   font-family: var(--font-body);
@@ -86,6 +87,11 @@
 .navbar-lang-btn:hover,
 .navbar-lang-btn.active {
   color: #fff;
+}
+
+.navbar-lang-btn.active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.48);
 }
 
 .navbar-tabs {
