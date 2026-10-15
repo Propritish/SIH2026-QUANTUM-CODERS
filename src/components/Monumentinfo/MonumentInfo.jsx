@@ -1,9 +1,11 @@
 import React from "react";
 import { Info } from "lucide-react";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./MonumentInfo.css";
 
 // Historical Metadata Card
 export default function MonumentInfo({ monument, era }) {
+  const { t } = useLanguage();
   const lat = monument.location?.coordinates?.[1];
   const lng = monument.location?.coordinates?.[0];
 
@@ -15,8 +17,8 @@ export default function MonumentInfo({ monument, era }) {
       </div>
       <p className="monument-info-desc">{monument.descriptions?.[era]}</p>
       <div className="monument-info-meta mono">
-        {monument.era && <span>Built {monument.era}</span>}
-        {monument.unesco && <span>UNESCO {monument.unesco}</span>}
+        {monument.era && <span>{t("info.built", { era: monument.era })}</span>}
+        {monument.unesco && <span>{t("info.unesco", { status: monument.unesco })}</span>}
         {lat != null && (
           <span>
             {lat.toFixed(4)}, {lng.toFixed(4)}

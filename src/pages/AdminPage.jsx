@@ -3,11 +3,13 @@ import { ShieldCheck } from "lucide-react";
 import LoginForm from "../components/Auth/LoginForm.jsx";
 import SignupForm from "../components/Auth/SignupForm.jsx";
 import AdminPortal from "../components/AdminPortal/Adminportal.jsx";
+import { useLanguage } from "../i18n/LanguageContext.jsx";
 import "./AdminPage.css";
 
 // Protected upload dashboard view — gates itself: shows the admin login
 // form until auth.user is an "admin" account, then shows AdminPortal.
 export default function AdminPage({ auth }) {
+  const { t } = useLanguage();
   const [uploads, setUploads] = useState([]);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -47,8 +49,8 @@ export default function AdminPage({ auth }) {
               onSubmit={handleLogin}
               submitting={submitting}
               error={error}
-              title="Admin sign in"
-              subtitle="Sign in with your curator account."
+              title={t("admin.signIn")}
+              subtitle={t("admin.signInSubtitle")}
             />
           ) : (
             <SignupForm onSubmit={handleSignup} submitting={submitting} error={error} adminMode />
@@ -58,7 +60,7 @@ export default function AdminPage({ auth }) {
             type="button"
             onClick={() => { setError(null); setMode(mode === "login" ? "signup" : "login"); }}
           >
-            {mode === "login" ? "Need an admin account? Sign up" : "Already registered? Sign in"}
+            {t(mode === "login" ? "signup.adminPrompt" : "signup.adminExisting")}
           </button>
         </div>
       </div>
@@ -72,8 +74,8 @@ export default function AdminPage({ auth }) {
           <ShieldCheck size={20} />
         </div>
         <div>
-          <h2 className="admin-hero-title">Curator Dashboard</h2>
-          <p className="mono admin-hero-subtitle">Signed in as {auth.user.name || auth.user.email}</p>
+          <h2 className="admin-hero-title">{t("admin.dashboard")}</h2>
+          <p className="mono admin-hero-subtitle">{t("admin.signedIn", { name: auth.user.name || auth.user.email })}</p>
         </div>
       </div>
       <AdminPortal auth={auth} uploads={uploads} addUpload={addUpload} />

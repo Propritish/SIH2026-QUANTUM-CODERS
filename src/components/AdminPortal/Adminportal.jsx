@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Upload, Plus, Loader2, AlertTriangle, Landmark, Inbox } from "lucide-react";
 import ModelUploader from "./ModelUploader.jsx";
 import { apiFetch } from "../../utils/api.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./AdminPortal.css";
 
 const EMPTY = { title: "", lat: "", lng: "", era: "", modelUrl: "", fileName: "" };
@@ -11,6 +12,7 @@ const EMPTY = { title: "", lat: "", lng: "", era: "", modelUrl: "", fileName: ""
 // to an in-memory "uploads" list, clearly flagged as local-only, if the
 // API call fails — e.g. backend not running, or the token expired.
 export default function AdminPortal({ auth, uploads, addUpload }) {
+  const { t } = useLanguage();
   const [form, setForm] = useState(EMPTY);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -70,29 +72,29 @@ export default function AdminPortal({ auth, uploads, addUpload }) {
       <div className="admin-portal-form card">
         <div className="admin-portal-form-header">
           <Upload size={16} />
-          <h3>Add a monument record</h3>
+          <h3>{t("portal.add")}</h3>
         </div>
         <div className="admin-portal-fields">
           <label className="admin-field">
-            <span className="admin-field-label">Monument title</span>
+            <span className="admin-field-label">{t("portal.title")}</span>
             <input value={form.title} onChange={set("title")} placeholder="e.g. Lingaraj Temple" />
           </label>
           <label className="admin-field">
-            <span className="admin-field-label">Era</span>
+            <span className="admin-field-label">{t("portal.era")}</span>
             <input value={form.era} onChange={set("era")} placeholder="e.g. 11th century" />
           </label>
           <div className="admin-field-row">
             <label className="admin-field">
-              <span className="admin-field-label">Latitude</span>
+              <span className="admin-field-label">{t("portal.latitude")}</span>
               <input value={form.lat} onChange={set("lat")} placeholder="20.2381" inputMode="decimal" />
             </label>
             <label className="admin-field">
-              <span className="admin-field-label">Longitude</span>
+              <span className="admin-field-label">{t("portal.longitude")}</span>
               <input value={form.lng} onChange={set("lng")} placeholder="85.8341" inputMode="decimal" />
             </label>
           </div>
           <label className="admin-field">
-            <span className="admin-field-label">Hosted .glb URL (optional)</span>
+            <span className="admin-field-label">{t("portal.modelUrl")}</span>
             <input value={form.modelUrl} onChange={set("modelUrl")} placeholder="https://…" />
           </label>
           <ModelUploader
@@ -101,12 +103,12 @@ export default function AdminPortal({ auth, uploads, addUpload }) {
           />
           <button className="btn btn-primary" onClick={submit} disabled={saving}>
             {saving ? <Loader2 size={14} className="admin-portal-spin" /> : <Plus size={14} />}
-            {saving ? "Saving…" : "Save to MongoDB"}
+            {saving ? t("portal.saving") : t("portal.save")}
           </button>
-          {saved && !offline && <span className="admin-portal-saved">Saved to monuments collection.</span>}
+          {saved && !offline && <span className="admin-portal-saved">{t("portal.saved")}</span>}
           {saved && offline && (
             <span className="admin-portal-warning">
-              <AlertTriangle size={13} /> API unreachable — kept locally only ({error}).
+              <AlertTriangle size={13} /> {t("portal.offline", { error })}
             </span>
           )}
         </div>
@@ -114,24 +116,24 @@ export default function AdminPortal({ auth, uploads, addUpload }) {
 
       <div className="admin-portal-output">
         <div className="card-dark admin-portal-preview">
-          <div className="mono admin-portal-preview-label">live preview · POST /api/monuments</div>
+          <div className="mono admin-portal-preview-label">{t("portal.preview")}</div>
           <pre>{jsonPreview}</pre>
         </div>
         <div className="card admin-portal-history">
           <div className="admin-portal-history-title">
-            <Landmark size={13} /> Uploaded this session ({uploads.length})
+            <Landmark size={13} /> {t("portal.history", { count: uploads.length })}
           </div>
           {uploads.length === 0 && (
             <div className="admin-portal-empty">
               <Inbox size={22} />
-              <p>Nothing added yet — new records will appear here.</p>
+              <p>{t("portal.empty")}</p>
             </div>
           )}
           {uploads.map((u, i) => (
             <div key={i} className="admin-portal-history-row">
               <span>
                 {u.title}
-                {u._local && <span className="admin-portal-local-tag mono"> local only</span>}
+                {u._local && <span className="admin-portal-local-tag mono"> {t("portal.localOnly")}</span>}
               </span>
               <span className="mono">{u.uploadedAt}</span>
             </div>

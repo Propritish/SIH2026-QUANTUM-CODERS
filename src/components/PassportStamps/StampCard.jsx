@@ -1,5 +1,6 @@
 import React from "react";
 import { Lock } from "lucide-react";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./PassportStamps.css";
 
 // One shared badge design (locked/unlocked) reused across every monument —
@@ -9,6 +10,7 @@ const lockedIcon = new URL("../../assets/stamps/konark_locked.png", import.meta.
 
 // Individual badge rendering
 export default function StampCard({ monument, unlocked }) {
+  const { t } = useLanguage();
   return (
     <div className={`stamp-card ${unlocked ? "unlocked" : "locked"}`}>
       <div className="stamp-card-icon-wrap">
@@ -22,7 +24,7 @@ export default function StampCard({ monument, unlocked }) {
       <div className="stamp-card-name">{monument.title}</div>
       <div className="stamp-card-era mono">{monument.era}</div>
       <div className="stamp-card-blurb">{monument.blurb}</div>
-      {!unlocked && !monument.live && <span className="stamp-card-soon mono">coming to this AR route</span>}
+      {!unlocked && !monument.live && <span className="stamp-card-soon mono">{t("stamp.soon")}</span>}
     </div>
   );
 }

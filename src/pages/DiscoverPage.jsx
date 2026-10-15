@@ -3,15 +3,17 @@ import DiscoveryMap from "../components/DiscoveryMap/DiscoveryMap.jsx";
 import MonumentSpotlight from "../components/MonumentSpotlight/MonumentSpotlight.jsx";
 import SearchBar from "../components/SearchBar/SearchBar.jsx";
 import { apiFetch } from "../utils/api.js";
+import { useLanguage } from "../i18n/LanguageContext.jsx";
 import "./DiscoverPage.css";
 
 const FILTERS = [
-  { id: "all", label: "All" },
-  { id: "live", label: "Live in AR" },
-  { id: "soon", label: "Coming soon" },
+  { id: "all", label: "filter.all" },
+  { id: "live", label: "filter.live" },
+  { id: "soon", label: "filter.soon" },
 ];
 
 export default function DiscoverPage() {
+  const { t } = useLanguage();
   const [monuments, setMonuments] = useState([]);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
@@ -41,14 +43,14 @@ export default function DiscoverPage() {
     <div className="discover-page">
       <section className="discover-hero">
         <div className="discover-hero-content">
-          <h2 className="discover-title">Discover Odisha's Heritage</h2>
+          <h2 className="discover-title">{t("discover.title")}</h2>
           <p className="discover-subtitle">
             {monuments.length > 0
-              ? `${monuments.filter((m) => m.live).length} live in AR · ${monuments.length} monuments on the map`
-              : "Explore the heritage route"}
+              ? t("discover.summary", { live: monuments.filter((m) => m.live).length, total: monuments.length })
+              : t("discover.tagline")}
           </p>
           <div className="discover-controls">
-            <SearchBar value={query} onChange={setQuery} placeholder="Search monuments, eras, places…" />
+            <SearchBar value={query} onChange={setQuery} placeholder={t("discover.search")} />
             <div className="discover-chips">
               {FILTERS.map((f) => (
                 <button
@@ -56,7 +58,7 @@ export default function DiscoverPage() {
                   className={`discover-chip ${filter === f.id ? "active" : ""}`}
                   onClick={() => setFilter(f.id)}
                 >
-                  {f.label}
+                  {t(f.label)}
                 </button>
               ))}
             </div>
@@ -65,7 +67,7 @@ export default function DiscoverPage() {
       </section>
 
       <div className="discover-results">
-        {error && <p className="mono discovery-map-error">Couldn't load monuments: {error}</p>}
+        {error && <p className="mono discovery-map-error">{t("discover.error", { error })}</p>}
         <DiscoveryMap monuments={filtered} />
         <MonumentSpotlight monuments={filtered} />
       </div>

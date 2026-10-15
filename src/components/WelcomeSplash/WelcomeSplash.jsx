@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import OdissiDancer from "../OdissiDancer/OdissiDancer.jsx";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./WelcomeSplash.css";
 
 // First-launch welcome screen. The figure is a stylised Odissi dancer in
@@ -17,6 +18,7 @@ const SEEN_KEY = "odisha-ar-heritage:splash-seen";
 const AUTO_DISMISS_MS = 2800;
 
 export default function WelcomeSplash({ onDone }) {
+  const { t } = useLanguage();
   const [leaving, setLeaving] = useState(false);
   const reducedMotion =
     typeof window !== "undefined" &&
@@ -46,7 +48,7 @@ export default function WelcomeSplash({ onDone }) {
       onClick={finish}
       role="button"
       tabIndex={0}
-      aria-label="Continue to Odisha AR Heritage"
+      aria-label={t("splash.continue")}
     >
       <div className="splash-halo" aria-hidden="true" />
 
@@ -63,11 +65,11 @@ export default function WelcomeSplash({ onDone }) {
 
       <div className="splash-text">
         <div className="splash-welcome-odia">ସ୍ୱାଗତ</div>
-        <h1 className="splash-title">Welcome to Odisha</h1>
-        <p className="splash-subtitle">Step into a thousand years of heritage</p>
+        <h1 className="splash-title">{t("splash.welcome")}</h1>
+        <p className="splash-subtitle">{t("splash.tagline")}</p>
       </div>
 
-      <div className="splash-hint mono">tap anywhere to continue</div>
+      <div className="splash-hint mono">{t("splash.hint")}</div>
     </div>
   );
 }

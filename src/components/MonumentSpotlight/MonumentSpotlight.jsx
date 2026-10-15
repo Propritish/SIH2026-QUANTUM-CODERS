@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Sparkles, Clock } from "lucide-react";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./MonumentSpotlight.css";
 
 // Horizontally-scrolling strip of monument cards beneath the Discover
 // map — gives search results a browsable list form, not just pins to
 // hunt for on the map itself.
 export default function MonumentSpotlight({ monuments }) {
+  const { t } = useLanguage();
   if (monuments.length === 0) return null;
 
   return (
@@ -17,11 +19,11 @@ export default function MonumentSpotlight({ monuments }) {
             <span className="spotlight-card-title">{m.title}</span>
             {m.live ? (
               <span className="spotlight-chip spotlight-chip-live">
-                <Sparkles size={11} /> Live in AR
+                <Sparkles size={11} /> {t("spotlight.live")}
               </span>
             ) : (
               <span className="spotlight-chip spotlight-chip-soon">
-                <Clock size={11} /> Coming soon
+                <Clock size={11} /> {t("spotlight.soon")}
               </span>
             )}
           </div>
@@ -29,7 +31,7 @@ export default function MonumentSpotlight({ monuments }) {
           <p className="spotlight-card-blurb">{m.blurb}</p>
           {m.live && (
             <Link to="/explorer" className="spotlight-card-link">
-              Explore in AR →
+              {t("spotlight.explore")}
             </Link>
           )}
         </div>

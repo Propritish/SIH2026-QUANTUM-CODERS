@@ -7,6 +7,7 @@ import MonumentInfo from "../components/Monumentinfo/MonumentInfo.jsx";
 import AudioGuide from "../components/AudioGuide/AudioGuide.jsx";
 import useGeofence from "../hooks/useGeofence.js";
 import { apiFetch } from "../utils/api.js";
+import { useLanguage } from "../i18n/LanguageContext.jsx";
 import "./ExplorerPage.css";
 
 const SLUG = "konark"; // this route is scoped to the Konark site
@@ -14,10 +15,10 @@ const SLUG = "konark"; // this route is scoped to the Konark site
 // Main WebAR experience view + Geofence banner. This genuinely is a
 // sequential flow (check in -> explore in AR -> learn -> listen), so
 // numbered step labels are used deliberately here, unlike other pages.
-export default function ExplorerPage({ lang, passport }) {
+export default function ExplorerPage({ lang, setLang, passport }) {
+  const { t } = useLanguage();
   const [monument, setMonument] = useState(null);
   const [era, setEra] = useState("restored");
-  const [audioLang, setAudioLang] = useState(lang);
 
   useEffect(() => {
     apiFetch(`/api/monuments/${SLUG}`)
@@ -40,7 +41,7 @@ export default function ExplorerPage({ lang, passport }) {
   if (!monument) {
     return (
       <div className="explorer-page">
-        <p className="mono">Loading monument data…</p>
+        <p className="mono">{t("explorer.loading")}</p>
       </div>
     );
   }
@@ -53,12 +54,12 @@ export default function ExplorerPage({ lang, passport }) {
         </div>
         <div>
           <h2 className="explorer-hero-title">{monument.title}</h2>
-          <p className="mono explorer-hero-subtitle">{monument.era} · in-AR heritage walk</p>
-        </div>
+          <p className="mono explorer-hero-subtitle">{monument.era} · {t("explorer.subtitle")}</p>
+          <p className="mono explorer-hero-subtitle">{monument.era} · {t("explorer.subtitle")}</p>
       </div>
 
       <div className="explorer-step">
-        <span className="explorer-step-label mono">Step 1 · Check in</span>
+        <span className="explorer-step-label mono">{t("explorer.step1")}</span>
         <GeofenceTrigger
           status={geofence.status}
           distance={geofence.distance}
@@ -70,25 +71,25 @@ export default function ExplorerPage({ lang, passport }) {
       </div>
 
       <div className="explorer-step">
-        <span className="explorer-step-label mono">Step 2 · Explore in AR</span>
+        <span className="explorer-step-label mono">{t("explorer.step2")}</span>
         <ArViewer monument={monument} era={era} unlocked={unlocked} />
         <TimeSlider era={era} setEra={setEra} />
       </div>
 
       <div className="explorer-step">
-        <span className="explorer-step-label mono">Step 3 · Learn the history</span>
+        <span className="explorer-step-label mono">{t("explorer.step3")}</span>
         <MonumentInfo monument={monument} era={era} />
       </div>
 
       <div className="explorer-step">
-        <span className="explorer-step-label mono">Step 4 · Listen along</span>
-        <AudioGuide monument={monument} era={era} lang={audioLang} setLang={setAudioLang} />
+        <span className="explorer-step-label mono">{t("explorer.step4")}</span>
+        <AudioGuide monument={monument} era={era} lang={lang} setLang={setLang} />
       </div>
 
       {unlocked && (
         <div className="explorer-unlocked">
           <Check size={15} />
-          <span>{monument.title.split(" ")[0]} stamp added to your passport.</span>
+          <span>{t("explorer.unlocked", { name: monument.title.split(" ")[0] })}</span>
         </div>
       )}
     </div>

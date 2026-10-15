@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-leaflet";
 import { Link } from "react-router-dom";
 import L from "leaflet";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "leaflet/dist/leaflet.css";
 import "./DiscoveryMap.css";
 
@@ -51,6 +52,7 @@ function FitToMarkers({ monuments }) {
 // grey wheel. Monument list is owned by the parent (DiscoverPage) so the
 // map, search bar, and spotlight cards all reflect the same filtered set.
 export default function DiscoveryMap({ monuments }) {
+  const { t } = useLanguage();
   return (
     <div className="discovery-map-wrap">
       <MapContainer center={ODISHA_CENTER} zoom={7} scrollWheelZoom className="discovery-map">
@@ -71,10 +73,10 @@ export default function DiscoveryMap({ monuments }) {
                   <p>{m.blurb}</p>
                   {m.live ? (
                     <Link to="/explorer" className="discovery-popup-link">
-                      Explore in AR →
+                      {t("map.explore")}
                     </Link>
                   ) : (
-                    <span className="discovery-popup-soon">Coming to this AR route</span>
+                    <span className="discovery-popup-soon">{t("map.coming")}</span>
                   )}
                 </div>
               </Popup>
@@ -92,7 +94,7 @@ export default function DiscoveryMap({ monuments }) {
       </MapContainer>
       {monuments.length === 0 && (
         <div className="discovery-map-empty">
-          <p>No monuments match your search.</p>
+          <p>{t("map.noResults")}</p>
         </div>
       )}
     </div>

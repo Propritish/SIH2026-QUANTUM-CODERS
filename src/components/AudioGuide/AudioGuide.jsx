@@ -1,27 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./AudioGuide.css";
-
-const LANGS = [
-  { code: "en", label: "English" },
-  { code: "or", label: "ଓଡ଼ିଆ" },
-  { code: "hi", label: "हिन्दी" },
-];
 
 function localAudioUrl(slug, lang) {
   return new URL(`../../assets/audio/${slug}_${lang}.mp3`, import.meta.url).href;
 }
 
-// Multilingual audio narration player. Plays monument.audioGuides[lang]
-// (a hosted URL from MongoDB) when set; otherwise tries the local
-// src/assets/audio fallback file, and falls back further to the browser's
-// built-in text-to-speech (using monument.narration) if neither loads —
-// so the guide still works before real recordings exist.
 export default function AudioGuide({ monument, era, lang, setLang }) {
+  const { t } = useLanguage();
   const [playing, setPlaying] = useState(false);
   const [usingFallback, setUsingFallback] = useState(false);
+  const [usingEnglishFallback, setUsingEnglishFallback] = useState(false);
   const audioRef = useRef(null);
-
   const remoteUrl = monument.audioGuides?.[lang];
   const src = remoteUrl || localAudioUrl(monument.slug, lang);
 
@@ -33,11 +24,17 @@ export default function AudioGuide({ monument, era, lang, setLang }) {
   const speakFallback = () => {
     if (!("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(monument.narration?.[era] || monument.blurb || "");
+    const localizedNarration = monument.translations?.[lang]?.narration?.[era];
+    const narration = localizedNarration || monument.narration?.[era] || monument.blurb || "";
+    const utter = new SpeechSynthesisUtterance(narration);
+    utter.lang = localizedNarration
+      ? (lang === "or" ? "or-IN" : lang === "hi" ? "hi-IN" : "en-IN")
+      : "en-IN";
     utter.rate = 0.95;
     utter.onend = () => setPlaying(false);
     window.speechSynthesis.speak(utter);
     setUsingFallback(true);
+    setUsingEnglishFallback(lang !== "en" && !localizedNarration);
     setPlaying(true);
   };
 
@@ -47,9 +44,10 @@ export default function AudioGuide({ monument, era, lang, setLang }) {
       el.play()
         .then(() => {
           setUsingFallback(false);
+          setUsingEnglishFallback(false);
           setPlaying(true);
         })
-        .catch(speakFallback); // file missing/not found — fall back to TTS
+        .catch(speakFallback);
     } else {
       speakFallback();
     }
@@ -64,31 +62,28 @@ export default function AudioGuide({ monument, era, lang, setLang }) {
 
   return (
     <div className="audio-guide">
-      <button className="audio-guide-play" onClick={playing ? stop : play}>
+      <button className="audio-guide-play" onClick={playing ? stop : play} aria-label={t(playing ? "audio.pause" : "audio.play")}>
         {playing ? <Pause size={16} /> : <Play size={16} />}
       </button>
-
       <div className="audio-guide-body">
-        <div className="audio-guide-title">
-          Audio guide · {LANGS.find((l) => l.code === lang)?.label}
-        </div>
+        <div className="audio-guide-title">{t("audio.title", { language: t(`lang.${lang}`) })}</div>
         <div className="audio-guide-langs">
-          {LANGS.map((l) => (
+          {["en", "or", "hi"].map((code) => (
             <button
-              key={l.code}
-              className={`audio-guide-lang ${lang === l.code ? "active" : ""}`}
-              onClick={() => setLang(l.code)}
+              key={code}
+              className={`audio-guide-lang ${lang === code ? "active" : ""}`}
+              onClick={() => setLang(code)}
             >
-              {l.label}
+              {t(`lang.${code}`)}
             </button>
           ))}
         </div>
         <div className="audio-guide-path mono">
-          {remoteUrl || `assets/audio/${monument.slug}_${lang}.mp3 (local fallback)`}
-          {usingFallback && " · falling back to device text-to-speech"}
+          {remoteUrl || `assets/audio/${monument.slug}_${lang}.mp3 (${t("audio.localFallback")})`}
+          {usingFallback && t("audio.fallback")}
+          {usingEnglishFallback && t("audio.englishFallback")}
         </div>
       </div>
-
       {playing ? <Volume2 size={16} /> : <VolumeX size={16} className="dim" />}
       <audio ref={audioRef} src={src} onEnded={stop} preload="none" />
     </div>

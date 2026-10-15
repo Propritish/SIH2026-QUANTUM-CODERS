@@ -10,12 +10,13 @@ import LoginPage from "./pages/LoginPage.jsx";
 import DiscoverPage from "./pages/DiscoverPage.jsx";
 import usePassport from "./hooks/usePassport.js";
 import useAuth from "./hooks/useAuth.js";
+import { useLanguage } from "./i18n/LanguageContext.jsx";
 
 const SEEN_KEY = "odisha-ar-heritage:splash-seen";
 
 // Router configuration & Protected Routes
 export default function App() {
-  const [lang, setLang] = useState("en");
+  const { lang, setLang, t } = useLanguage();
   const [showSplash, setShowSplash] = useState(
     () => window.sessionStorage.getItem(SEEN_KEY) !== "true"
   );
@@ -47,7 +48,7 @@ export default function App() {
             path="/explorer"
             element={
               <ProtectedRoute user={auth.user}>
-                <ExplorerPage lang={lang} passport={passport} />
+                <ExplorerPage lang={lang} setLang={setLang} passport={passport} />
               </ProtectedRoute>
             }
           />
@@ -65,7 +66,7 @@ export default function App() {
           <Route path="/admin" element={<AdminPage auth={auth} />} />
         </Routes>
       </main>
-      <footer className="app-footer">Odisha AR Heritage • Discover • Experience • Verify • Collect</footer>
+      <footer className="app-footer">{t("footer")}</footer>
     </div>
   );
 }

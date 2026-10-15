@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Lock } from "lucide-react";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ArViewer.css";
 
 // Local fallback used when a monument document doesn't have a hosted
@@ -12,6 +13,7 @@ function localModelUrl(slug, era) {
 
 // Core WebAR Surface Tracking, wrapping Google's <model-viewer>.
 export default function ArViewer({ monument, era, unlocked }) {
+  const { t } = useLanguage();
   const useSketchfab = monument.slug === "konark" && (era === "restored" || era === "damaged");
   const sketchfabModel = era === "restored"
     ? {
@@ -55,7 +57,7 @@ export default function ArViewer({ monument, era, unlocked }) {
       {!unlocked && (
         <div className="ar-viewer-lock">
           <Lock size={22} />
-          <p>Check in near {monument.title} to load the model</p>
+          <p>{t("ar.checkIn", { name: monument.title })}</p>
         </div>
       )}
 
@@ -64,7 +66,7 @@ export default function ArViewer({ monument, era, unlocked }) {
           <iframe className="sketchfab-viewer" title={sketchfabModel.title} src={sketchfabModel.embed} allow="autoplay; fullscreen; xr-spatial-tracking" allowFullScreen />
           <p className="ar-viewer-attribution">
             <a href={sketchfabModel.modelUrl} target="_blank" rel="noreferrer">{sketchfabModel.modelName}</a>{" "}
-            by <a href={sketchfabModel.creatorUrl} target="_blank" rel="noreferrer">{sketchfabModel.creator}</a>{" on "}
+            {t("ar.by")} <a href={sketchfabModel.creatorUrl} target="_blank" rel="noreferrer">{sketchfabModel.creator}</a>{` ${t("ar.on")} `}
             <a href="https://sketchfab.com" target="_blank" rel="noreferrer">Sketchfab</a>
           </p>
         </>
@@ -73,7 +75,7 @@ export default function ArViewer({ monument, era, unlocked }) {
       {/* eslint-disable-next-line react/no-unknown-property */}
       <model-viewer
         src={src}
-        alt={`${monument.title} — ${era} state`}
+        alt={t("ar.state", { name: monument.title, era: t(`era.${era}`) })}
         ar
         ar-modes="webxr scene-viewer quick-look"
         camera-controls
@@ -84,14 +86,14 @@ export default function ArViewer({ monument, era, unlocked }) {
         style={{ width: "100%", height: "260px" }}
       >
         <div className="ar-viewer-fallback" slot="poster">
-          {modelFailed ? "Model could not be loaded" : `Loading ${era} model…`}
+          {modelFailed ? t("ar.failed") : t("ar.loading", { era: t(`era.${era}`) })}
         </div>
       </model-viewer>
       </>
       )}
 
       {!useSketchfab && <p className="ar-viewer-path mono">
-        {src} · drag to orbit
+        {src} · {t("ar.drag")}
       </p>}
     </div>
   );

@@ -4,6 +4,7 @@ import StampCard from "./StampCard.jsx";
 import ProgressRing from "../ProgressRing/ProgressRing.jsx";
 import SearchBar from "../SearchBar/SearchBar.jsx";
 import { apiFetch } from "../../utils/api.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./PassportStamps.css";
 
 // Unlocked stamp grid — pulls the monument catalogue from GET /api/monuments
@@ -11,6 +12,7 @@ import "./PassportStamps.css";
 // GET /api/passport/history, loaded by usePassport). A progress ring
 // leads as the hero, and a search bar narrows the grid by name/era.
 export default function PassportStamps({ unlockedStamps }) {
+  const { t } = useLanguage();
   const [monuments, setMonuments] = useState([]);
   const [query, setQuery] = useState("");
 
@@ -35,25 +37,25 @@ export default function PassportStamps({ unlockedStamps }) {
       <div className="passport-header">
         <ProgressRing value={unlockedCount} total={monuments.length} />
         <div>
-          <h2 className="passport-title">Heritage Passport</h2>
+          <h2 className="passport-title">{t("passport.title")}</h2>
           <p className="passport-subtitle mono">
-            {unlockedCount} of {monuments.length} wheels collected
+            {t("passport.count", { unlocked: unlockedCount, total: monuments.length })}
           </p>
         </div>
         <Award size={22} className="passport-header-award" />
       </div>
 
-      <SearchBar value={query} onChange={setQuery} placeholder="Search your stamps…" />
+      <SearchBar value={query} onChange={setQuery} placeholder={t("passport.search")} />
 
       <div className="stamp-grid">
         {filtered.map((m) => (
           <StampCard key={m.slug} monument={m} unlocked={!!unlockedStamps[m.slug]} />
         ))}
       </div>
-      {filtered.length === 0 && <p className="mono passport-empty">No stamps match your search.</p>}
+      {filtered.length === 0 && <p className="mono passport-empty">{t("passport.empty")}</p>}
 
       <p className="mono passport-footnote">
-        hooks/usePassport.js — synced with MongoDB via /api/passport/*
+        {t("passport.saved")}
       </p>
     </div>
   );

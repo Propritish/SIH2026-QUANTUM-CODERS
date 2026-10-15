@@ -4,12 +4,13 @@ import { Compass, Award, Globe2 } from "lucide-react";
 import LoginForm from "../components/Auth/LoginForm.jsx";
 import SignupForm from "../components/Auth/SignupForm.jsx";
 import OdissiDancer from "../components/OdissiDancer/OdissiDancer.jsx";
+import { useLanguage } from "../i18n/LanguageContext.jsx";
 import "./LoginPage.css";
 
 const HIGHLIGHTS = [
-  { icon: Compass, text: "Explore monuments in AR, restored to their original glory" },
-  { icon: Award, text: "Collect digital Heritage Passport stamps as you visit" },
-  { icon: Globe2, text: "Guided narration in English, Odia, and Hindi" },
+  { icon: Compass, key: "login.highlight1" },
+  { icon: Award, key: "login.highlight2" },
+  { icon: Globe2, key: "login.highlight3" },
 ];
 
 // Landing auth page for tourists — mandatory before Explorer/Passport.
@@ -18,6 +19,7 @@ const HIGHLIGHTS = [
 // actual login/signup form. Toggles between the two modes; admin
 // sign-in lives on /admin instead (embedded in AdminPage), not here.
 export default function LoginPage({ auth }) {
+  const { t } = useLanguage();
   const [mode, setMode] = useState("login"); // "login" | "signup"
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -60,13 +62,13 @@ export default function LoginPage({ auth }) {
         <div className="login-hero-copy">
           <div className="login-hero-odia">ସ୍ୱାଗତ</div>
           <h1>Odisha AR Heritage</h1>
-          <p>Walk through a thousand years of history — starting with the Konark Sun Temple.</p>
+          <p>{t("login.hero")}</p>
         </div>
         <ul className="login-hero-list">
-          {HIGHLIGHTS.map(({ icon: Icon, text }, i) => (
+          {HIGHLIGHTS.map(({ icon: Icon, key }, i) => (
             <li key={i}>
               <Icon size={16} />
-              <span>{text}</span>
+              <span>{t(key)}</span>
             </li>
           ))}
         </ul>
@@ -82,7 +84,7 @@ export default function LoginPage({ auth }) {
                 setError(null);
               }}
             >
-              Log in
+              {t("signup.loginTab")}
             </button>
             <button
               className={`login-tab ${mode === "signup" ? "active" : ""}`}
@@ -91,7 +93,7 @@ export default function LoginPage({ auth }) {
                 setError(null);
               }}
             >
-              Sign up
+              {t("signup.signupTab")}
             </button>
           </div>
 
@@ -100,8 +102,8 @@ export default function LoginPage({ auth }) {
               onSubmit={handleLogin}
               submitting={submitting}
               error={error}
-              title="Welcome back"
-              subtitle="Log in to continue exploring."
+              title={t("login.welcome")}
+              subtitle={t("login.subtitle")}
             />
           ) : (
             <SignupForm onSubmit={handleSignup} submitting={submitting} error={error} />
