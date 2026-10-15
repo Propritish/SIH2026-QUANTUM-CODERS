@@ -1,14 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Compass, Award, ShieldCheck, Map } from "lucide-react";
+import { ChevronDown, Globe2 } from "lucide-react";
 import UserProfileBar from "../Auth/UserPreofileBar.jsx";
 import "./Navbar.css";
 
 const TABS = [
-  { to: "/discover", label: "Discover", icon: Map },
-  { to: "/explorer", label: "Explorer", icon: Compass },
-  { to: "/passport", label: "Passport", icon: Award },
-  { to: "/admin", label: "Admin", icon: ShieldCheck },
+  { to: "/discover", label: "Discover" },
+  { to: "/explorer", label: "Explorer" },
+  { to: "/passport", label: "Passport" },
+  { to: "/admin", label: "Admin" },
 ];
 
 const LANGS = [
@@ -28,39 +28,38 @@ export default function Navbar({ lang, setLang, stampCount, user, onLogout }) {
             <div className="navbar-subtitle mono">odisha-ar-heritage · WebAR</div>
           </div>
         </div>
+        <nav className="navbar-tabs" aria-label="Main navigation">
+          {TABS.map((t) => (
+            <NavLink
+              key={t.to}
+              to={t.to}
+              className={({ isActive }) => `navbar-tab ${isActive ? "active" : ""}`}
+            >
+              {t.label}
+              <ChevronDown size={13} aria-hidden="true" />
+              {t.to === "/passport" && stampCount > 0 && (
+                <span className="navbar-badge">{stampCount}</span>
+              )}
+            </NavLink>
+          ))}
+        </nav>
         <div className="navbar-right">
-          <div className="navbar-langs">
+          <div className="navbar-langs" aria-label="Language">
+            <Globe2 size={20} aria-hidden="true" />
             {LANGS.map((l) => (
               <button
                 key={l.code}
                 className={`navbar-lang-btn ${lang === l.code ? "active" : ""}`}
                 onClick={() => setLang(l.code)}
+                aria-label={`Change language to ${l.label}`}
               >
-                {l.label}
+                {l.code.toUpperCase()}
               </button>
             ))}
           </div>
           <UserProfileBar user={user} onLogout={onLogout} />
         </div>
       </div>
-      <nav className="navbar-tabs">
-        {TABS.map((t) => {
-          const Icon = t.icon;
-          return (
-            <NavLink
-              key={t.to}
-              to={t.to}
-              className={({ isActive }) => `navbar-tab ${isActive ? "active" : ""}`}
-            >
-              <Icon size={15} />
-              {t.label}
-              {t.to === "/passport" && stampCount > 0 && (
-                <span className="navbar-badge">{stampCount}</span>
-              )}
-            </NavLink>
-          );
-        })}
-      </nav>
     </header>
   );
 }

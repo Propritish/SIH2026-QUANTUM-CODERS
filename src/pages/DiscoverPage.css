@@ -1,34 +1,74 @@
 .discover-page {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 20px 16px 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  padding: 0 0 48px;
 }
 
 .discover-hero {
+  position: relative;
+  isolation: isolate;
   display: flex;
-  align-items: center;
-  gap: 14px;
+  align-items: flex-end;
+  min-height: 540px;
+  margin-top: -78px;
+  padding: 170px max(24px, calc((100vw - 1040px) / 2)) 54px;
+  overflow: hidden;
+  color: #fff;
+  background: #544333;
 }
 
-.discover-hero-icon {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--gradient-dusk);
-  color: var(--gold-bright);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.discover-hero::before,
+.discover-hero::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+}
+
+.discover-hero::before {
+  background: url("../assets/konark-hero.jpeg") center 53% / cover no-repeat;
+  filter: blur(2px);
+  transform: scale(1.025);
+}
+
+.discover-hero::after {
+  background:
+    linear-gradient(90deg, rgba(29, 25, 27, 0.58) 0%, rgba(37, 34, 36, 0.2) 58%, rgba(45, 41, 42, 0.08) 100%),
+    linear-gradient(0deg, rgba(246, 242, 235, 0.42) 0%, rgba(239, 236, 233, 0.12) 27%, transparent 64%),
+    radial-gradient(ellipse at 76% 68%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.08) 28%, transparent 57%);
+}
+
+.discover-hero-content {
+  width: min(100%, 620px);
+  text-shadow: 0 2px 18px rgba(24, 20, 20, 0.5);
+}
+
+.discover-title {
+  margin: 0 0 8px;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 62px);
+  font-weight: 700;
+  line-height: 1.05;
+  text-shadow: 0 3px 22px rgba(0, 0, 0, 0.42);
+}
+
+.discover-subtitle {
+  margin: 0 0 22px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-body);
+  font-size: 14px;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
 }
 
 .discover-controls {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 12px;
+  text-shadow: none;
+}
+
+.discover-controls > *:first-child {
+  width: min(100%, 480px);
 }
 
 .discover-chips {
@@ -38,26 +78,33 @@
 }
 
 .discover-chip {
+  padding: 8px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 999px;
+  background: rgba(30, 27, 25, 0.32);
+  color: #fff;
   font-family: var(--font-body);
   font-size: 12.5px;
   font-weight: 600;
-  padding: 7px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border-warm);
-  background: var(--parchment);
-  color: var(--stone-dim);
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.discover-chip:hover {
-  border-color: var(--gold-dim);
-}
-
+.discover-chip:hover,
 .discover-chip.active {
-  background: var(--stone-dark);
-  color: var(--parchment);
-  border-color: var(--stone-dark);
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.88);
+  color: #302820;
+}
+
+.discover-results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(100% - 32px, 960px);
+  margin: 22px auto 0;
 }
 
 .discovery-map-empty {
@@ -71,7 +118,44 @@
 }
 
 .discovery-map-empty p {
+  color: var(--stone-dim);
   font-family: var(--font-body);
   font-size: 13px;
-  color: var(--stone-dim);
+}
+
+@media (max-width: 900px) {
+  .discover-hero {
+    min-height: 540px;
+    margin-top: -128px;
+    padding-top: 205px;
+  }
+
+  .discover-hero::before {
+    background-position: 46% center;
+  }
+}
+
+@media (max-width: 600px) {
+  .discover-hero {
+    min-height: 500px;
+    margin-top: -118px;
+    padding: 180px 20px 36px;
+  }
+
+  .discover-hero::before {
+    background-position: 42% center;
+  }
+
+  .discover-title {
+    font-size: clamp(34px, 10vw, 46px);
+  }
+
+  .discover-subtitle {
+    font-size: 12px;
+  }
+
+  .discover-chip {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
 }
